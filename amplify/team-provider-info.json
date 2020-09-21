@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-zoot-dev-154937-authRole",
+            "UnauthRoleArn": "arn:aws:iam::713795650719:role/amplify-zoot-dev-154937-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::713795650719:role/amplify-zoot-dev-154937-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-zoot-dev-154937-deployment",
+            "UnauthRoleName": "amplify-zoot-dev-154937-unauthRole",
+            "StackName": "amplify-zoot-dev-154937",
+            "StackId": "arn:aws:cloudformation:us-east-1:713795650719:stack/amplify-zoot-dev-154937/661eb440-e7d5-11ea-84fb-0a36a8f29061",
+            "AmplifyAppId": "d8s8iv3i7era5"
+        },
+        "categories": {
+            "auth": {
+                "zootd1c04b50d1c04b50": {}
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"zootd1c04b50d1c04b50": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
