@@ -11,6 +11,7 @@ import SVPinView
 class PincodeVC: UIViewController {
 
     @IBOutlet weak var pincodeView: SVPinView!
+    @IBOutlet weak var phoneLabel: UILabel!
     
     public var phoneNumber: String!
     
@@ -18,9 +19,12 @@ class PincodeVC: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        phoneLabel.text = phoneNumber
+        
         pincodeView.font = UIFont(name: "Montserrat-Bold", size: 18)!
         pincodeView.style = .none
         pincodeView.pinLength = 5
+        pincodeView.shouldSecureText = false
         pincodeView.fieldBackgroundColor = .white
         pincodeView.fieldCornerRadius = 8
         pincodeView.activeFieldBackgroundColor = .white

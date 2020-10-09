@@ -40,6 +40,13 @@ class NameVC: UIViewController {
     
     // MARK: - IBAction
     @objc @IBAction func nextAction() {
+        guard let name = nameTextField.text else { return }
+        if name.count == 0 {
+            showAlertViewController(message: "Name cannot be empty!")
+            return
+        }
+        
+        CTUser.current.name = name
         performSegue(withIdentifier: "BirthdateVC", sender: nil)
     }
     

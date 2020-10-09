@@ -68,17 +68,17 @@
 				}
 			}
 		},
-		"authzootd1c04b50d1c04b50": {
+		"authcashtimed10b7a2a": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/amplify-zoot-dev-154937-deployment/amplify-cfn-templates/auth/zootd1c04b50d1c04b50-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/amplify-cashtime-dev-90909-deployment/amplify-cfn-templates/auth/cashtimed10b7a2a-cloudformation-template.yml",
 				"Parameters": {
-					"identityPoolName": "zootd1c04b50_identitypool_d1c04b50",
-					"allowUnauthenticatedIdentities": true,
-					"resourceNameTruncated": "zootd1d1c04b50",
-					"userPoolName": "zootd1c04b50_userpool_d1c04b50",
+					"identityPoolName": "cashtimed10b7a2a_identitypool_d10b7a2a",
+					"allowUnauthenticatedIdentities": false,
+					"resourceNameTruncated": "cashtid10b7a2a",
+					"userPoolName": "cashtimed10b7a2a_userpool_d10b7a2a",
 					"autoVerifiedAttributes": "email",
-					"mfaConfiguration": "ON",
+					"mfaConfiguration": "OFF",
 					"mfaTypes": "SMS Text Message",
 					"smsAuthenticationMessage": "Your authentication code is {####}",
 					"smsVerificationMessage": "Your verification code is {####}",
@@ -87,22 +87,16 @@
 					"defaultPasswordPolicy": false,
 					"passwordPolicyMinLength": 8,
 					"passwordPolicyCharacters": "",
-					"requiredAttributes": "email,phone_number",
+					"requiredAttributes": "email",
 					"userpoolClientGenerateSecret": true,
 					"userpoolClientRefreshTokenValidity": 30,
 					"userpoolClientWriteAttributes": "email",
 					"userpoolClientReadAttributes": "email",
-					"userpoolClientLambdaRole": "zootd1d1c04b50_userpoolclient_lambda_role",
+					"userpoolClientLambdaRole": "cashtid10b7a2a_userpoolclient_lambda_role",
 					"userpoolClientSetAttributes": false,
-					"useDefault": "manual",
+					"sharedId": "d10b7a2a",
+					"resourceName": "cashtimed10b7a2a",
 					"authSelections": "identityPoolAndUserPool",
-					"resourceName": "zootd1c04b50d1c04b50",
-					"thirdPartyAuth": false,
-					"userPoolGroups": false,
-					"adminQueries": false,
-					"triggers": "{}",
-					"hostedUI": false,
-					"userPoolGroupList": "",
 					"authRoleArn": {
 						"Fn::GetAtt": [
 							"AuthRole",
@@ -115,10 +109,10 @@
 							"Arn"
 						]
 					},
-					"parentStack": {
-						"Ref": "AWS::StackId"
-					},
-					"permissions": "",
+					"useDefault": "default",
+					"usernameAttributes": "email, phone_number",
+					"userPoolGroupList": "",
+					"serviceName": "Cognito",
 					"dependsOn": "",
 					"env": "dev"
 				}
@@ -128,7 +122,7 @@
 			"DependsOn": [
 				"AuthRole",
 				"UnauthRole",
-				"authzootd1c04b50d1c04b50"
+				"authcashtimed10b7a2a"
 			],
 			"Type": "AWS::Lambda::Function",
 			"Properties": {
@@ -211,7 +205,7 @@
 				},
 				"idpId": {
 					"Fn::GetAtt": [
-						"authzootd1c04b50d1c04b50",
+						"authcashtimed10b7a2a",
 						"Outputs.IdentityPoolId"
 					]
 				},

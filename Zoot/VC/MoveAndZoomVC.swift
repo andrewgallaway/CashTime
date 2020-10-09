@@ -7,23 +7,34 @@
 //
 
 import UIKit
+import AVKit
 
 protocol MoveAndZoomVCDelegate {
     func didCropImage(_ image: UIImage)
+    func didCropTrimVideo(_ url: URL)
 }
 
 class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
     @IBOutlet weak var scrollContainerView: UIView!
     @IBOutlet weak var scrollView: FAScrollView!
+    @IBOutlet weak var trimmerView: TrimmerView!
+    
+    @IBOutlet weak var topDoneConstraint: NSLayoutConstraint!
     
     private var croppedImage: UIImage? = nil
     private var isFirstLayout = true
+    private var seekTimer: Timer? = nil
     
     public var delegate: MoveAndZoomVCDelegate? = nil
-    var image = UIImage()
+    var image: UIImage? = nil
+    var videoURL: URL? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.playDelegate = self
+        trimmerView.delegate = self
+        trimmerView.handleColor = .yellow
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -35,15 +46,54 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
         
         if isFirstLayout {
             isFirstLayout = false
-            scrollView.layoutIfNeeded()
-            self.scrollView.imageToDisplay = image
+            self.view.layoutIfNeeded()
+            if let image = self.image {
+                self.scrollView.imageToDisplay = image
+                trimmerView.isHidden = true
+                topDoneConstraint.constant = 44
+            } else {
+                self.scrollView.videoToDisplay = videoURL
+                trimmerView.isHidden = false
+                topDoneConstraint.constant = 88
+                trimmerView.asset = AVURLAsset(url: videoURL!)
+                scrollView.startTime = trimmerView.startTime
+                scrollView.endTime = trimmerView.endTime
+            }
             scrollView.zoom()
             scrollView.updateLayout()
         }
     }
+    
+    fileprivate func startSeekTimer() {
+        stopSeekTimer()
+        seekTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(handleSeekTimer(_:)), userInfo: nil, repeats: true)
+    }
+    
+    fileprivate func stopSeekTimer() {
+        if let timer = seekTimer {
+            timer.invalidate()
+            seekTimer = nil
+        }
+    }
+    
+    @objc fileprivate func handleSeekTimer(_ timer: Timer) {
+        guard let _ = videoURL else {
+            return
+        }
+        
+        var currentTime = scrollView.currentTime()
+        if let startTime = trimmerView.startTime, let endTime = trimmerView.endTime, CMTimeGetSeconds(currentTime) >= CMTimeGetSeconds(endTime) {
+            scrollView.seek(startTime)
+            currentTime = startTime
+        }
+        trimmerView.seek(to: currentTime)
+    }
 
+    // MARK: - IBAction
     @IBAction func backTapped(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        //self.navigationController?.popViewController(animated: true)
+        stopSeekTimer()
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func showTapped(_ sender: Any) {
@@ -51,16 +101,46 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
         //let vc =  self.storyboard?.instantiateViewController(withIdentifier: "ImageDetailVc") as! ImageDetailVc
         //vc.image = captureVisibleRect()
         
-        delegate?.didCropImage(captureVisibleRect())
-        //self.navigationController?.popViewController(animated: true)
-        self.dismiss(animated: true, completion: nil)
+        stopSeekTimer()
+        if let _ = image {
+            delegate?.didCropImage(captureVisibleRect())
+            //self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            trimCropVideo { (outputURL) in
+                self.delegate?.didCropTrimVideo(outputURL!)
+                //self.navigationController?.popViewController(animated: true)
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func trimCropVideo(_ completion: @escaping (_ outputURL: URL?) -> Void) {
+        let filename = generateRandomFileName(fileExtension: VIDEO_EXTENSION)
+        let path = generateVideoFilePath(filename: filename)
+        
+        var cropRect = CGRect.zero
+        let xOffset = scrollView.imageToDisplay!.size.width / scrollView.contentSize.width;
+        let yOffset = scrollView.imageToDisplay!.size.height / scrollView.contentSize.height;
+        
+        cropRect.origin.x = scrollView.contentOffset.x * xOffset;
+        cropRect.origin.y = scrollView.contentOffset.y * yOffset;
+        
+        let normalizedWidth = (scrollView?.frame.width)! / (scrollView?.contentSize.width)!
+        let normalizedHeight = (scrollView?.frame.height)! / (scrollView?.contentSize.height)!
+        
+        cropRect.size.width = scrollView.imageToDisplay!.size.width * normalizedWidth
+        cropRect.size.height = scrollView.imageToDisplay!.size.height * normalizedHeight
+        
+        VideoManager.shared.trimCropVideo(url: videoURL!, outputURL: URL(fileURLWithPath: path), startTime: CMTimeGetSeconds(trimmerView.startTime!), endTime: CMTimeGetSeconds(trimmerView.endTime!), outputFrame: cropRect) { (success, outputURL, error) in
+            completion(outputURL)
+        }
     }
   
-    private func captureVisibleRect() -> UIImage{
-        
+    private func captureVisibleRect() -> UIImage {
         var croprect = CGRect.zero
-        let xOffset = (scrollView.imageToDisplay?.size.width)! / scrollView.contentSize.width;
-        let yOffset = (scrollView.imageToDisplay?.size.height)! / scrollView.contentSize.height;
+        let xOffset = scrollView.imageToDisplay!.size.width / scrollView.contentSize.width;
+        let yOffset = scrollView.imageToDisplay!.size.height / scrollView.contentSize.height;
         
         croprect.origin.x = scrollView.contentOffset.x * xOffset;
         croprect.origin.y = scrollView.contentOffset.y * yOffset;
@@ -71,13 +151,37 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
         croprect.size.width = scrollView.imageToDisplay!.size.width * normalizedWidth
         croprect.size.height = scrollView.imageToDisplay!.size.height * normalizedHeight
         
-        let toCropImage = scrollView.imageView.image?.fixImageOrientation()
-        let cr: CGImage? = toCropImage?.cgImage?.cropping(to: croprect)
-        let cropped = UIImage(cgImage: cr!)
+        let cropImage = scrollView.imageView.image?.fixImageOrientation()
+        let cgImage: CGImage? = cropImage?.cgImage?.cropping(to: croprect)
+        let cropped = UIImage(cgImage: cgImage!)
         
         return cropped
     }
 }
 
+extension MoveAndZoomVC: FAScrollViewPlayDelegate {
+    func didStartPlayVideo(_ scrollView: FAScrollView) {
+        startSeekTimer()
+    }
+    
+    func didStopPlayVideo(_ scrollView: FAScrollView) {
+        stopSeekTimer()
+    }
+}
 
-
+extension MoveAndZoomVC: TrimmerViewDelegate {
+    func didChangePositionBar(_ playerTime: CMTime) {
+        scrollView.pause()
+        scrollView.startTime = trimmerView.startTime
+        scrollView.endTime = trimmerView.endTime
+        scrollView.seek(playerTime)
+        stopSeekTimer()
+    }
+    
+    func positionBarStoppedMoving(_ playerTime: CMTime) {
+        scrollView.pause()
+        scrollView.startTime = trimmerView.startTime
+        scrollView.endTime = trimmerView.endTime
+        stopSeekTimer()
+    }
+}

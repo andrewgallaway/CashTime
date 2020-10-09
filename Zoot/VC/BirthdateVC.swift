@@ -14,6 +14,8 @@ class BirthdateVC: UIViewController {
     @IBOutlet weak var birthdayTextField: UITextField!
     @IBOutlet weak var progressView: UIProgressView!
     
+    fileprivate var birthday: Date?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -34,6 +36,7 @@ class BirthdateVC: UIViewController {
         if let datepicker = self.birthdayTextField.inputView as? UIDatePicker {
             let dateformatter = DateFormatter()
             dateformatter.dateStyle = .medium
+            birthday = datepicker.date
             self.birthdayTextField.text = dateformatter.string(from: datepicker.date)
         }
         self.birthdayTextField.resignFirstResponder()
@@ -47,6 +50,12 @@ class BirthdateVC: UIViewController {
     
     // MARK: - IBAction
     @objc @IBAction func nextAction() {
+        guard let birthday = self.birthday else {
+            showAlertViewController(message: "Birthday cannot be empty!")
+            return
+        }
+        
+        CTUser.current.birthday = birthday
         performSegue(withIdentifier: "UsernameVC", sender: nil)
     }
     

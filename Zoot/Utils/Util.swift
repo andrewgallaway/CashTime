@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+let VIDEO_EXTENSION = "mov"
+
 func getIFAddresses() -> [String] {
     var addresses = [String]()
 
@@ -39,4 +41,43 @@ func getIFAddresses() -> [String] {
 
     freeifaddrs(ifaddr)
     return addresses
+}
+
+func isValidEmail(_ email: String) -> Bool {
+    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+    let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+    return emailPred.evaluate(with: email)
+}
+
+func generateRandomFileName(length: Int = 48, fileExtension: String) -> String {
+    let letters = "abcdefghijklmnopqrstuvwxyz1234567890"
+    let length = letters.count
+    var filename = ""
+    for _ in 0..<length {
+        let rand = arc4random_uniform(UInt32(length))
+        let startIndex = letters.index(letters.startIndex, offsetBy: String.IndexDistance(rand))
+        let endIndex = letters.index(startIndex, offsetBy: 1)
+        filename += letters[startIndex..<endIndex]
+    }
+    return filename + "." + fileExtension
+}
+
+func generateVideoFilePath(filename: String) -> String {
+    var path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! + "/Videos/"
+    if FileManager.default.fileExists(atPath: path) == false {
+        try? FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+    }
+    path = path + filename
+    return path
+}
+
+func showAlertViewController(title: String? = nil, message: String) {
+    let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let action = UIAlertAction(title: "OK", style: .cancel) { (action) in
+        
+    }
+    controller.addAction(action)
+    if let topViewController = UIApplication.topViewController() {
+        topViewController.present(controller, animated: true, completion: nil)
+    }
 }

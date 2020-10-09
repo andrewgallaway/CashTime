@@ -12,6 +12,7 @@ import Amplify
 import AmplifyPlugins
 import Firebase
 import GoogleSignIn
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate{
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -22,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate{
         // Override point for customization after application launch.
             
         do {
+            try Amplify.add(plugin: AWSAPIPlugin())
+            try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.configure()
         } catch {
             print("An error occurred setting up Amplify: \(error)")
@@ -37,8 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate{
     }
     
     @available(iOS 9.0, *)
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any])
-      -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
       return GIDSignIn.sharedInstance().handle(url)
     }
     // MARK: UISceneSession Lifecycle
@@ -54,7 +56,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate{
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
 }
 
+extension UIApplication {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        if let tabController = controller as? UITabBarController {
+            if let selected = tabController.selectedViewController {
+                return topViewController(controller: selected)
+            }
+        }
+        if let presented = controller?.presentedViewController {
+            return topViewController(controller: presented)
+        }
+        return controller
+    }
+}

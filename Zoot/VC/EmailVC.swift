@@ -13,6 +13,7 @@ class EmailVC: UIViewController {
 
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,12 +36,28 @@ class EmailVC: UIViewController {
     func initUI() {
         continueButton.layer.borderColor = UIColor.white.cgColor
         
-        emailTextField.attributedPlaceholder = NSAttributedString(string:"Email", attributes:[NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
+        emailTextField.attributedPlaceholder = NSAttributedString(string:"Email", attributes:[NSAttributedString.Key.font : emailTextField.font!, NSAttributedString.Key.foregroundColor: UIColor.lightText])
         emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        passwordTextField.attributedPlaceholder = NSAttributedString(string:"Password", attributes:[NSAttributedString.Key.font : passwordTextField.font!, NSAttributedString.Key.foregroundColor: UIColor.lightText])
+        passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     // MARK: - IBAction
     @objc @IBAction func nextAction() {
+        guard let email = emailTextField.text else { return }
+        if email.count == 0 || isValidEmail(email) == false {
+            showAlertViewController(message: "Please enter valid email!")
+            return
+        }
+        
+        guard let password = passwordTextField.text else { return }
+        if password.count < 6 {
+            showAlertViewController(message: "Password requires at least 6 characters!")
+            return
+        }
+        CTUser.current.email = email
+        CTUser.current.password = password
         performSegue(withIdentifier: "WelcomeVC", sender: nil)
     }
     

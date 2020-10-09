@@ -7,14 +7,22 @@
 //
 
 import UIKit
+import AVKit
 
-class FAScrollView: UIScrollView{
+protocol FAScrollViewPlayDelegate {
+    func didStartPlayVideo(_ scrollView: FAScrollView)
+    func didStopPlayVideo(_ scrollView: FAScrollView)
+}
+
+class FAScrollView: UIScrollView {
 
     // MARK: Class properties
     
-    var imageView:UIImageView = UIImageView()
-    var imageToDisplay:UIImage? = nil {
-        didSet{
+    var imageView = UIImageView()
+    var player: AVPlayer? = nil
+    var playerLayer: AVPlayerLayer? = nil
+    var imageToDisplay: UIImage? = nil {
+        didSet {
             zoomScale = 1.0
             minimumZoomScale = 1.0
             imageView.image = imageToDisplay
@@ -25,18 +33,29 @@ class FAScrollView: UIScrollView{
             updateLayout()
         }
     }
-    var gridView:UIView = Bundle.main.loadNibNamed("FAGridView", owner: nil, options: nil)?.first as! UIView
-    
+    var videoToDisplay: URL? = nil {
+        didSet {
+            if let url = videoToDisplay {
+                self.imageToDisplay = VideoManager.shared.thumbImage(url: url)
+                prepareVideoPlayer(url)
+            } else {
+                removeVideoPlayer()
+            }
+        }
+    }
+    public var startTime: CMTime? = nil
+    public var endTime: CMTime? = nil
+    public var gridView: UIView = Bundle.main.loadNibNamed("FAGridView", owner: nil, options: nil)?.first as! UIView
+    public var playDelegate: FAScrollViewPlayDelegate? = nil
 
     // MARK : Class Functions
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         viewConfigurations()
     }
 
     func updateLayout() {
-        imageView.center = center;
+        imageView.center = CGPoint(x: bounds.width / 2.0, y: bounds.height / 2.0);
         var frame:CGRect = imageView.frame;
         if (frame.origin.x < 0) { frame.origin.x = 0 }
         if (frame.origin.y < 0) { frame.origin.y = 0 }
@@ -52,7 +71,6 @@ class FAScrollView: UIScrollView{
     
     
     // MARK: Private Functions
-    
     private func viewConfigurations(){
         
         clipsToBounds = false;
@@ -70,6 +88,9 @@ class FAScrollView: UIScrollView{
         gridView.isHidden = true
         gridView.isUserInteractionEnabled = false
         addSubview(gridView)
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        addGestureRecognizer(gesture)
     }
     
     private func sizeForImageToDisplay() -> CGSize{
@@ -111,9 +132,82 @@ class FAScrollView: UIScrollView{
         return scale
     }
 
+    // MARK: - Video Player
+    fileprivate func prepareVideoPlayer(_ url: URL) {
+        player = AVPlayer(url: url)
+        playerLayer = AVPlayerLayer(player: player)
+        if let layer = playerLayer {
+            imageView.layer.addSublayer(layer)
+        }
+        playerLayer?.frame = imageView.bounds
+        playerLayer?.videoGravity = .resizeAspectFill
+        if let _ = self.player {
+            NotificationCenter.default.addObserver(self, selector: #selector(handleDidPlayToEndTime(_:)), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        }
+    }
+    
+    fileprivate func removeVideoPlayer() {
+        if let layer = playerLayer {
+            layer.removeFromSuperlayer()
+            playerLayer = nil
+        }
+        
+        if let player = self.player {
+            player.pause()
+            self.player = nil
+            NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        }
+    }
+    
+    @objc fileprivate func handleDidPlayToEndTime(_ notification: Notification) {
+        if let startTime = startTime {
+            player?.seek(to: startTime, toleranceBefore: .zero, toleranceAfter: .zero)
+        } else {
+            player?.seek(to: .zero)
+        }
+        player?.play()
+    }
+    
+    @objc fileprivate func handleTapGesture(_ gesture: UITapGestureRecognizer) {
+        guard let player = player else {
+            return
+        }
+        
+        if player.rate == 0 {
+            player.play()
+            playDelegate?.didStartPlayVideo(self)
+        } else {
+            player.pause()
+            playDelegate?.didStopPlayVideo(self)
+        }
+    }
+    
+    public func play() {
+        if let player = player {
+            player.play()
+        }
+    }
+    
+    public func pause() {
+        if let player = player {
+            player.pause()
+        }
+    }
+    
+    public func currentTime() -> CMTime {
+        if let player = player {
+            return player.currentTime()
+        } else {
+            return .zero
+        }
+    }
+    
+    public func seek(_ time: CMTime) {
+        if let player = player {
+            player.seek(to: time, toleranceBefore: .zero, toleranceAfter: .zero)
+        }
+    }
 }
-
-
 
 extension FAScrollView:UIScrollViewDelegate{
     

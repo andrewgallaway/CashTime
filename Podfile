@@ -15,13 +15,20 @@ target 'Zoot' do
   pod 'IQKeyboardManagerSwift'  
   pod 'Amplify'
   pod 'Amplify/Tools'
+  pod 'AmplifyPlugins/AWSAPIPlugin'
   pod 'AmplifyPlugins/AWSDataStorePlugin'
+  pod 'AmplifyPlugins/AWSCognitoAuthPlugin'
+  pod 'AWSPredictionsPlugin'
+#  pod 'AWSUserPoolsSignIn'
+#  pod 'AWSAuthUI'
+  pod 'AWSMobileClient'
   pod 'Firebase'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'InstagramLogin'
   pod 'Mantis', '~> 1.3.2'
   pod 'UIColor_Hex_Swift'
+  pod 'Alamofire'
   
   # Pods for Zoot
 

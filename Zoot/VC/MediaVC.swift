@@ -8,6 +8,8 @@
 
 import UIKit
 import Mantis
+import MobileCoreServices
+
 class MediaVC: UIViewController {
 
     @IBOutlet weak var photoCollectionView: UICollectionView!
@@ -15,7 +17,7 @@ class MediaVC: UIViewController {
     @IBOutlet weak var longpressLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
     
-    fileprivate var arrayPhotos: [UIImage] = []
+    fileprivate var arrayPhotos: [Any] = []
     
     var selectedIndex: Int = 0
     
@@ -46,7 +48,11 @@ class MediaVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MoveAndZoomVC" {
             let controller = segue.destination as! MoveAndZoomVC
-            controller.image = sender as! UIImage
+            if let image = sender as? UIImage {
+                controller.image = image
+            } else {
+                controller.videoURL = sender as? URL
+            }
             controller.delegate = self
         }
     }
@@ -66,15 +72,20 @@ class MediaVC: UIViewController {
     
     //Select Photo_Dialog
     func selectPhoto(index: Int){
-        let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+        let alert = UIAlertController(title: "Choose Media", message: nil, preferredStyle: .actionSheet)
+//        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+//            self.selectedIndex = index
+//            self.openCamera()
+//        }))
+        
+        alert.addAction(UIAlertAction(title: "Pictures", style: .default, handler: { _ in
             self.selectedIndex = index
-            self.openCamera()
+            self.openPhotoLibrary(mediaType: kUTTypeImage as String)
         }))
         
-        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "Videos", style: .default, handler: { _ in
             self.selectedIndex = index
-            self.openPhotoLibrary()
+            self.openPhotoLibrary(mediaType: kUTTypeMovie as String)
         }))
         
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
@@ -95,27 +106,31 @@ class MediaVC: UIViewController {
         }
     }
     
-    func openPhotoLibrary() {
+    func openPhotoLibrary(mediaType: String) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
         //imagePicker.allowsEditing = true
+        imagePicker.mediaTypes = [mediaType]
         self.present(imagePicker, animated: true, completion: nil)
     }
 }
 
 extension MediaVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
         var selectedImage: UIImage?
         if let image = info[.originalImage] as? UIImage {
             selectedImage = image
+            performSegue(withIdentifier: "MoveAndZoomVC", sender: selectedImage)
+        } else if let url = info[.mediaURL] as? URL {
+            print(url)
+            performSegue(withIdentifier: "MoveAndZoomVC", sender: url)
         }
-        picker.dismiss(animated: true, completion: nil)
         /*let cropViewController = Mantis.cropViewController(image: selectedImage!)
         cropViewController.delegate = self
         cropViewController.modalPresentationStyle = .fullScreen
         present(cropViewController, animated: true)*/
-        performSegue(withIdentifier: "MoveAndZoomVC", sender: selectedImage)
     }
 }
 extension MediaVC : CropViewControllerDelegate {
@@ -154,7 +169,11 @@ extension MediaVC: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCollectionCell
         cell.delegate = self
         if arrayPhotos.count > indexPath.item {
-            cell.photo = arrayPhotos[indexPath.item]
+            if let photo = arrayPhotos[indexPath.item] as? UIImage {
+                cell.photo = photo
+            } else if let url = arrayPhotos[indexPath.item] as? URL {
+                cell.photo = VideoManager.shared.thumbImage(url: url)
+            }
         } else {
             cell.photo = nil
         }
@@ -179,17 +198,17 @@ extension MediaVC: UICollectionViewDelegate {
 
 extension MediaVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.frame.width - 16 * 2.0) / 3.0
-        let height = (collectionView.frame.height - 16 * 2.0) / 3.0
+        let width = (collectionView.frame.width - 8 * 2.0) / 3.0
+        let height = (collectionView.frame.height - 8 * 2.0) / 3.0
         return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 16.0
+        return 8.0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 16.0
+        return 8.0
     }
 }
 
@@ -203,6 +222,11 @@ extension MediaVC: PhotoCollectionCellDelegate {
 extension MediaVC: MoveAndZoomVCDelegate {
     func didCropImage(_ image: UIImage) {
         arrayPhotos.append(image)
+        photoCollectionView.reloadData()
+    }
+    
+    func didCropTrimVideo(_ url: URL) {
+        arrayPhotos.append(url)
         photoCollectionView.reloadData()
     }
 }

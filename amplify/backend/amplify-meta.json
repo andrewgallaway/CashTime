@@ -1,56 +1,38 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-zoot-dev-154937-authRole",
-      "UnauthRoleArn": "arn:aws:iam::713795650719:role/amplify-zoot-dev-154937-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::713795650719:role/amplify-zoot-dev-154937-authRole",
+      "AuthRoleName": "amplify-cashtime-dev-90909-authRole",
+      "UnauthRoleArn": "arn:aws:iam::713795650719:role/amplify-cashtime-dev-90909-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::713795650719:role/amplify-cashtime-dev-90909-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-zoot-dev-154937-deployment",
-      "UnauthRoleName": "amplify-zoot-dev-154937-unauthRole",
-      "StackName": "amplify-zoot-dev-154937",
-      "StackId": "arn:aws:cloudformation:us-east-1:713795650719:stack/amplify-zoot-dev-154937/661eb440-e7d5-11ea-84fb-0a36a8f29061",
-      "AmplifyAppId": "d8s8iv3i7era5"
+      "DeploymentBucketName": "amplify-cashtime-dev-90909-deployment",
+      "UnauthRoleName": "amplify-cashtime-dev-90909-unauthRole",
+      "StackName": "amplify-cashtime-dev-90909",
+      "StackId": "arn:aws:cloudformation:us-east-1:713795650719:stack/amplify-cashtime-dev-90909/5007a790-fd63-11ea-8365-12dc156c2e93",
+      "AmplifyAppId": "doh4otu6qq751"
     }
   },
   "auth": {
-    "zootd1c04b50d1c04b50": {
+    "cashtimed10b7a2a": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
+      "customAuth": false,
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-zoot-dev-154937-deployment/amplify-cfn-templates/auth/zootd1c04b50d1c04b50-cloudformation-template.yml",
-        "logicalId": "authzootd1c04b50d1c04b50"
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cashtime-dev-90909-deployment/amplify-cfn-templates/auth/cashtimed10b7a2a-cloudformation-template.yml",
+        "logicalId": "authcashtimed10b7a2a"
       },
-      "lastPushTimeStamp": "2020-08-26T19:56:51.951Z",
+      "lastPushTimeStamp": "2020-09-23T08:08:26.362Z",
       "output": {
-        "CreatedSNSRole": "arn:aws:iam::713795650719:role/snsundefined154937-dev",
-        "AppClientSecret": "1sbd7rtto8in5f2mv8aepc9n7rm9e495el5ipjehglm0jmob6obb",
-        "UserPoolId": "us-east-1_PgJv5sNbi",
-        "AppClientIDWeb": "5jmdb3t2ire4n0c75uirp4nj8d",
-        "AppClientID": "1rnd1skn7jku941n8qekren45k",
-        "IdentityPoolId": "us-east-1:535702db-183e-43f5-92b6-e6e391507807",
-        "IdentityPoolName": "zootd1c04b50_identitypool_d1c04b50__dev",
-        "UserPoolName": "zootd1c04b50_userpool_d1c04b50"
+        "AppClientSecret": "p41b9rkpn2qiqd2vhfj2ldcvt0te812v6ft68cf1oap1t32c7an",
+        "UserPoolId": "us-east-1_GONOuYCGB",
+        "AppClientIDWeb": "79p1l577frraic81958coioqe7",
+        "AppClientID": "3f2rjcrjvk64mjmi46f97dl14o",
+        "IdentityPoolId": "us-east-1:59fb9cc5-1915-43dd-b2b8-6387844a98af",
+        "IdentityPoolName": "cashtimed10b7a2a_identitypool_d10b7a2a__dev",
+        "UserPoolName": "cashtimed10b7a2a_userpool_d10b7a2a"
       },
-      "lastPushDirHash": "x3UMs4Wke92o5hcHP6rvCgUuHzA="
-    }
-  },
-  "api": {
-    "userprofile": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
-              "description": "authentication_key"
-            }
-          },
-          "additionalAuthenticationProviders": []
-        }
-      }
+      "lastPushDirHash": "Sgr+aPVFfMkga+dV1LJSKBOZE4Q="
     }
   }
 }

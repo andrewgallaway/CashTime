@@ -35,6 +35,13 @@ class UsernameVC: UIViewController {
     
     // MARK: - IBAction
     @objc @IBAction func nextAction() {
+        guard let username = usernameTextField.text else { return }
+        if username.count == 0 {
+            showAlertViewController(message: "Username cannot be empty!")
+            return
+        }
+        
+        CTUser.current.username = username
         performSegue(withIdentifier: "MediaVC", sender: nil)
     }
     
@@ -43,12 +50,35 @@ class UsernameVC: UIViewController {
     }
     
     @objc func textFieldDidChange(_ textField: UITextField){
-        let userNameTxt = textField.text!
-        if (userNameTxt.isEmpty) {
+        let username = textField.text!
+        if username.isEmpty {
             self.usernameCheckMarkerImageView.isHidden = true
         } else {
-            self.usernameCheckMarkerImageView.isHidden = false
+            APIManager.shared.cancelAllRequests()
+            APIManager.shared.isExistUsername(username) { (response, error) in
+                if let response = response, let exist = response["exist"] as? Bool, exist == false {
+                    self.usernameCheckMarkerImageView.isHidden = false
+                } else {
+                    self.usernameCheckMarkerImageView.isHidden = true
+                }
+            }
         }
         
+    }
+}
+
+extension UsernameVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = textField.text! as NSString
+        let newText = text.replacingCharacters(in: range, with: string)
+        APIManager.shared.cancelAllRequests()
+        APIManager.shared.isExistUsername(newText) { (response, error) in
+            if let response = response, let exist = response["exist"] as? Bool, exist == false {
+                self.usernameCheckMarkerImageView.isHidden = false
+            } else {
+                self.usernameCheckMarkerImageView.isHidden = true
+            }
+        }
+        return true
     }
 }

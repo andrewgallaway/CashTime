@@ -1,8 +1,20 @@
 PODS:
+  - Alamofire (5.2.2)
   - Amplify (1.2.0):
     - Amplify/Default (= 1.2.0)
   - Amplify/Default (1.2.0)
   - Amplify/Tools (1.2.0)
+  - AmplifyPlugins/AWSAPIPlugin (1.2.0):
+    - AppSyncRealTimeClient (~> 1.4.0)
+    - AWSAuthCore (~> 2.15.0)
+    - AWSCore (~> 2.15.0)
+    - AWSPluginsCore (= 1.2.0)
+    - ReachabilitySwift (~> 5.0.0)
+  - AmplifyPlugins/AWSCognitoAuthPlugin (1.2.0):
+    - AWSAuthCore (~> 2.15.0)
+    - AWSCore (~> 2.15.0)
+    - AWSMobileClient (~> 2.15.0)
+    - AWSPluginsCore (= 1.2.0)
   - AmplifyPlugins/AWSDataStorePlugin (1.2.0):
     - AWSAuthCore (~> 2.15.0)
     - AWSCore (~> 2.15.0)
@@ -13,12 +25,16 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - AppSyncRealTimeClient (1.4.1):
+    - Starscream (~> 3.1.0)
   - AWSAuthCore (2.15.3):
     - AWSCore (= 2.15.3)
   - AWSCognitoIdentityProvider (2.15.3):
     - AWSCognitoIdentityProviderASF (= 1.0.2)
     - AWSCore (= 2.15.3)
   - AWSCognitoIdentityProviderASF (1.0.2)
+  - AWSComprehend (2.15.3):
+    - AWSCore (= 2.15.3)
   - AWSCore (2.15.3)
   - AWSMobileClient (2.15.3):
     - AWSAuthCore (= 2.15.3)
@@ -27,6 +43,28 @@ PODS:
     - Amplify (= 1.2.0)
     - AWSCore (~> 2.15.0)
     - AWSMobileClient (~> 2.15.0)
+  - AWSPolly (2.15.3):
+    - AWSCore (= 2.15.3)
+  - AWSPredictionsPlugin (1.2.0):
+    - AWSComprehend (~> 2.15.0)
+    - AWSCore (~> 2.15.0)
+    - AWSPluginsCore (= 1.2.0)
+    - AWSPolly (~> 2.15.0)
+    - AWSRekognition (~> 2.15.0)
+    - AWSTextract (~> 2.15.0)
+    - AWSTranscribeStreaming (~> 2.15.0)
+    - AWSTranslate (~> 2.15.0)
+    - CoreMLPredictionsPlugin (= 1.2.0)
+  - AWSRekognition (2.15.3):
+    - AWSCore (= 2.15.3)
+  - AWSTextract (2.15.3):
+    - AWSCore (= 2.15.3)
+  - AWSTranscribeStreaming (2.15.3):
+    - AWSCore (= 2.15.3)
+  - AWSTranslate (2.15.3):
+    - AWSCore (= 2.15.3)
+  - CoreMLPredictionsPlugin (1.2.0):
+    - Amplify (= 1.2.0)
   - FacebookCore (0.9.0):
     - FBSDKCoreKit (~> 5.0)
   - FacebookLogin (0.9.0):
@@ -140,16 +178,23 @@ PODS:
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
   - PromisesObjC (1.2.10)
+  - ReachabilitySwift (5.0.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
+  - Starscream (3.1.1)
   - SVPinView (1.0.9)
   - UIColor_Hex_Swift (5.1.0)
 
 DEPENDENCIES:
+  - Alamofire
   - Amplify
   - Amplify/Tools
+  - AmplifyPlugins/AWSAPIPlugin
+  - AmplifyPlugins/AWSCognitoAuthPlugin
   - AmplifyPlugins/AWSDataStorePlugin
+  - AWSMobileClient
+  - AWSPredictionsPlugin
   - FacebookCore
   - FacebookLogin
   - FacebookShare
@@ -167,15 +212,25 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - Amplify
     - AmplifyPlugins
     - AppAuth
+    - AppSyncRealTimeClient
     - AWSAuthCore
     - AWSCognitoIdentityProvider
     - AWSCognitoIdentityProviderASF
+    - AWSComprehend
     - AWSCore
     - AWSMobileClient
     - AWSPluginsCore
+    - AWSPolly
+    - AWSPredictionsPlugin
+    - AWSRekognition
+    - AWSTextract
+    - AWSTranscribeStreaming
+    - AWSTranslate
+    - CoreMLPredictionsPlugin
     - FacebookCore
     - FacebookLogin
     - FacebookShare
@@ -200,20 +255,32 @@ SPEC REPOS:
     - Mantis
     - nanopb
     - PromisesObjC
+    - ReachabilitySwift
     - SQLite.swift
+    - Starscream
     - SVPinView
     - UIColor_Hex_Swift
 
 SPEC CHECKSUMS:
+  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
   Amplify: 936bb160a853e94be153c2f3f8a250f7090c9ee0
   AmplifyPlugins: dda20f2503c4a9e7175fd3d91223113f802f9526
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AppSyncRealTimeClient: 879b9fa3ce3f335450ca06e0def279fa90af9e76
   AWSAuthCore: 598e8eb56e12799877414d10b04598de12a15992
   AWSCognitoIdentityProvider: 4a721292eda37a8c3ef451e8fec28abe14aff18e
   AWSCognitoIdentityProviderASF: 0fb6ea671c05a63276e320726f680cd880522442
+  AWSComprehend: 7d9b634a174b5232aa55fe078cc683998aec5201
   AWSCore: 5a8f9d7461dbe5ea6a5473c41cf113b687e19136
   AWSMobileClient: 5c29678413764ee3bcd528421331deb0a35b72fb
   AWSPluginsCore: c413c27dece5dbf0e9530ae6c01a804998205eb7
+  AWSPolly: 8ac46e1d2c346ca695cc24c69f11e9f75e52538f
+  AWSPredictionsPlugin: 0545c6fde92367007e319984cbc7d6596263474a
+  AWSRekognition: d25cf1d593b57f79e422bab23d7ff63998a5f6e3
+  AWSTextract: d2a8eb92f069c8a45a844d5ff6cabcf72978b96b
+  AWSTranscribeStreaming: 0d6f2707b5dd6dcb14b45d93473673f8348d040a
+  AWSTranslate: 27b61b88ab62c4c74719e4da46ac1d78180faeaa
+  CoreMLPredictionsPlugin: 2c9ca2df6e77fae6e6cd86a70c1a679d5e3be4b8
   FacebookCore: ba86524b66cfa86d0f8e65d08faa8504a9f732dd
   FacebookLogin: 6cee9fd6e1fe976fe8f7eec199e27b28b14f5d63
   FacebookShare: 85968ad1b1606c4944fb154924e425fd29184ea5
@@ -238,10 +305,12 @@ SPEC CHECKSUMS:
   Mantis: 0212289bb98e94ed6c2db941ed7072d06fba306f
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SVPinView: 3dd47f5cd5ee67520ab1319a780cc0664735fafe
   UIColor_Hex_Swift: 8be7432edacb7fa91c78aa05ef3c30b66e4f9415
 
-PODFILE CHECKSUM: d5c55b894a6adfeaf5f3e0f5123e91c842d75b6c
+PODFILE CHECKSUM: da297d73c9b16beefa917c7aee43835fd2b82f13
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.0.rc.1

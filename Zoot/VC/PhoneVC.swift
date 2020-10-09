@@ -30,6 +30,8 @@ class PhoneVC: UIViewController {
         // Do any additional setup after loading the view.
         initUI()
         getIPaddress()
+        
+        CTUser.current.isLoggedIn = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -136,7 +138,13 @@ class PhoneVC: UIViewController {
     @objc @IBAction func sendSMSAction() {
         self.view.endEditing(true)
         // here is test signup informatoin for Aws auth...
-        performSegue(withIdentifier: "PincodeVC", sender: phoneTextField.text!)
+        guard let phone = phoneTextField.getRawPhoneNumber() else {
+            showAlertViewController(message: "Please enter valid phone number!")
+            return
+        }
+        CTUser.current.phone = phoneTextField.text!
+        CTUser.current.phone_code = phoneTextField.selectedCountry!.phoneCode
+        performSegue(withIdentifier: "PincodeVC", sender: phone)
     }
     
     func signUp(username: String, password: String, email: String, phonenumber: String) {
