@@ -172,7 +172,7 @@ extension MediaVC: UICollectionViewDataSource {
             if let photo = arrayPhotos[indexPath.item] as? UIImage {
                 cell.photo = photo
             } else if let url = arrayPhotos[indexPath.item] as? URL {
-                cell.photo = VideoManager.shared.thumbImage(url: url)
+                cell.video = url
             }
         } else {
             cell.photo = nil

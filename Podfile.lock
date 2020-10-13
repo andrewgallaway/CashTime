@@ -65,6 +65,7 @@ PODS:
     - AWSCore (= 2.15.3)
   - CoreMLPredictionsPlugin (1.2.0):
     - Amplify (= 1.2.0)
+  - DynamicBlurView (5.0.3)
   - FacebookCore (0.9.0):
     - FBSDKCoreKit (~> 5.0)
   - FacebookLogin (0.9.0):
@@ -195,6 +196,7 @@ DEPENDENCIES:
   - AmplifyPlugins/AWSDataStorePlugin
   - AWSMobileClient
   - AWSPredictionsPlugin
+  - DynamicBlurView
   - FacebookCore
   - FacebookLogin
   - FacebookShare
@@ -231,6 +233,7 @@ SPEC REPOS:
     - AWSTranscribeStreaming
     - AWSTranslate
     - CoreMLPredictionsPlugin
+    - DynamicBlurView
     - FacebookCore
     - FacebookLogin
     - FacebookShare
@@ -281,6 +284,7 @@ SPEC CHECKSUMS:
   AWSTranscribeStreaming: 0d6f2707b5dd6dcb14b45d93473673f8348d040a
   AWSTranslate: 27b61b88ab62c4c74719e4da46ac1d78180faeaa
   CoreMLPredictionsPlugin: 2c9ca2df6e77fae6e6cd86a70c1a679d5e3be4b8
+  DynamicBlurView: b57e2f6aa33f85b2bcca272265162a3c7c5cc499
   FacebookCore: ba86524b66cfa86d0f8e65d08faa8504a9f732dd
   FacebookLogin: 6cee9fd6e1fe976fe8f7eec199e27b28b14f5d63
   FacebookShare: 85968ad1b1606c4944fb154924e425fd29184ea5
@@ -311,6 +315,6 @@ SPEC CHECKSUMS:
   SVPinView: 3dd47f5cd5ee67520ab1319a780cc0664735fafe
   UIColor_Hex_Swift: 8be7432edacb7fa91c78aa05ef3c30b66e4f9415
 
-PODFILE CHECKSUM: da297d73c9b16beefa917c7aee43835fd2b82f13
+PODFILE CHECKSUM: 100186e3c9856e00900bd8cb41c09b95ba03c4ee
 
 COCOAPODS: 1.10.0.rc.1

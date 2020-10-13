@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import DynamicBlurView
 
 protocol MoveAndZoomVCDelegate {
     func didCropImage(_ image: UIImage)
@@ -18,6 +19,8 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
     @IBOutlet weak var scrollContainerView: UIView!
     @IBOutlet weak var scrollView: FAScrollView!
     @IBOutlet weak var trimmerView: TrimmerView!
+    @IBOutlet weak var muteButton: UIButton!
+    @IBOutlet weak var playView: DynamicBlurView!
     
     @IBOutlet weak var topDoneConstraint: NSLayoutConstraint!
     
@@ -34,7 +37,9 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
         
         scrollView.playDelegate = self
         trimmerView.delegate = self
-        trimmerView.handleColor = .yellow
+        playView.blurRadius = 10
+        playView.trackingMode = .tracking
+        playView.isUserInteractionEnabled = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,6 +56,8 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
                 self.scrollView.imageToDisplay = image
                 trimmerView.isHidden = true
                 topDoneConstraint.constant = 44
+                playView.isHidden = true
+                muteButton.isHidden = true
             } else {
                 self.scrollView.videoToDisplay = videoURL
                 trimmerView.isHidden = false
@@ -61,6 +68,7 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
             }
             scrollView.zoom()
             scrollView.updateLayout()
+            playView.refresh()
         }
     }
     
@@ -115,6 +123,15 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
         }
     }
     
+    @IBAction func muteTapped(_ sender: Any) {
+        muteButton.isSelected = !muteButton.isSelected
+        scrollView.mute(muteButton.isSelected)
+    }
+    
+    @IBAction func playTapped(_ sender: Any) {
+        scrollView.play()
+    }
+    
     private func trimCropVideo(_ completion: @escaping (_ outputURL: URL?) -> Void) {
         let filename = generateRandomFileName(fileExtension: VIDEO_EXTENSION)
         let path = generateVideoFilePath(filename: filename)
@@ -161,10 +178,13 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
 
 extension MoveAndZoomVC: FAScrollViewPlayDelegate {
     func didStartPlayVideo(_ scrollView: FAScrollView) {
+        playView.isHidden = true
         startSeekTimer()
     }
     
     func didStopPlayVideo(_ scrollView: FAScrollView) {
+        playView.isHidden = false
+        playView.refresh()
         stopSeekTimer()
     }
 }

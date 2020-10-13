@@ -47,6 +47,7 @@ class FAScrollView: UIScrollView {
     public var endTime: CMTime? = nil
     public var gridView: UIView = Bundle.main.loadNibNamed("FAGridView", owner: nil, options: nil)?.first as! UIView
     public var playDelegate: FAScrollViewPlayDelegate? = nil
+    public private(set) var isPlaying = false
 
     // MARK : Class Functions
     override func awakeFromNib() {
@@ -90,6 +91,7 @@ class FAScrollView: UIScrollView {
         addSubview(gridView)
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        gesture.delegate = self
         addGestureRecognizer(gesture)
     }
     
@@ -165,7 +167,9 @@ class FAScrollView: UIScrollView {
         } else {
             player?.seek(to: .zero)
         }
-        player?.play()
+        if isPlaying {
+            player?.play()
+        }
     }
     
     @objc fileprivate func handleTapGesture(_ gesture: UITapGestureRecognizer) {
@@ -176,21 +180,33 @@ class FAScrollView: UIScrollView {
         if player.rate == 0 {
             player.play()
             playDelegate?.didStartPlayVideo(self)
+            isPlaying = true
         } else {
             player.pause()
             playDelegate?.didStopPlayVideo(self)
+            isPlaying = false
         }
     }
     
     public func play() {
         if let player = player {
             player.play()
+            playDelegate?.didStartPlayVideo(self)
+            isPlaying = true
         }
     }
     
     public func pause() {
         if let player = player {
             player.pause()
+            playDelegate?.didStopPlayVideo(self)
+            isPlaying = false
+        }
+    }
+    
+    public func mute(_ isMuted: Bool) {
+        if let player = player {
+            player.isMuted = isMuted
         }
     }
     
@@ -245,5 +261,14 @@ extension FAScrollView:UIScrollViewDelegate{
         }
         
     }
-    
+}
+
+extension FAScrollView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIControl {
+            return false
+        }
+        
+        return true
+    }
 }

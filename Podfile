@@ -29,6 +29,7 @@ target 'Zoot' do
   pod 'Mantis', '~> 1.3.2'
   pod 'UIColor_Hex_Swift'
   pod 'Alamofire'
+  pod 'DynamicBlurView'
   
   # Pods for Zoot
 
