@@ -11,8 +11,10 @@ import Alamofire
 
 let SERVER_LINK = "http://localhost:3000/"
 let SERVER_MAIN = "http://localhost:3000/"
+let SERVER_ACCESSTOKEN = "http://localhost:5001/cashtime-accesstoken/us-central1/addMessage"
 //let SERVER_LINK = "https://www.cashtime.com/"
 //let SERVER_MAIN = "https://www.cashtime.com/"
+//let SERVER_ACCESSTOKEN = "http://localhost:3000/"
 
 class APIManager: NSObject {
     static let shared = APIManager()
@@ -56,6 +58,41 @@ class APIManager: NSObject {
         AF.cancelAllRequests()
     }
     
+    func getAccessToken(room: String, identity: String, _ completion: @escaping (_ response: [String : Any]?, _ error: Error?) -> Void) {
+        let params = ["room" : room,
+                      "identity" : identity]
+        get(SERVER_ACCESSTOKEN, params).responseJSON { (response) in
+            switch response.result {
+            case .success(let result):
+                //print(result)
+                if let header = response.response?.allHeaderFields {
+                    //print(header)
+                    if let cookie = header["Set-Cookie"] as? String {
+                        self.header = cookie.components(separatedBy: ";").first!
+                    }
+                    self.cookies = HTTPCookie.cookies(withResponseHeaderFields: header as! [String : String], for: URL(string: SERVER_MAIN)!)
+                }
+                if let result = result as? [String : Any] {
+                    if let status = result["status"] as? Bool {
+                        if status == true {
+                            completion(result["data"] as? [String : Any], nil)
+                        } else {
+                            let data = result["data"] as! [String : String]
+                            let userInfo = [NSLocalizedDescriptionKey : data["error"]!]
+                            completion(nil, NSError(domain: "CashTimeErrorDomain", code: 30001, userInfo: userInfo))
+                        }
+                    }
+                } else {
+                    completion(nil, nil)
+                }
+                break
+            case .failure(let error):
+                completion(nil, error)
+                break
+            }
+        }
+    }
+    
     func signin(_ email: String, _ password: String, _ completion: @escaping (_ response: [String : Any]?, _ error: Error?) -> Void) {
         let params = ["email" : email,
                       "password" : password]
@@ -77,7 +114,7 @@ class APIManager: NSObject {
                         } else {
                             let data = result["data"] as! [String : String]
                             let userInfo = [NSLocalizedDescriptionKey : data["error"]!]
-                            completion(nil, NSError(domain: "BranchVideoSigninErrorDomain", code: 30001, userInfo: userInfo))
+                            completion(nil, NSError(domain: "CashTimeErrorDomain", code: 30001, userInfo: userInfo))
                         }
                     }
                 } else {
@@ -152,7 +189,7 @@ class APIManager: NSObject {
                         } else {
                             let data = result["data"] as! [String : String]
                             let userInfo = [NSLocalizedDescriptionKey : data["error"]!]
-                            completion(nil, NSError(domain: "BranchVideoSigninErrorDomain", code: 30001, userInfo: userInfo))
+                            completion(nil, NSError(domain: "CashTimeErrorDomain", code: 30001, userInfo: userInfo))
                         }
                     }
                 } else {
@@ -185,7 +222,7 @@ class APIManager: NSObject {
                         } else {
                             let data = result["data"] as! [String : String]
                             let userInfo = [NSLocalizedDescriptionKey : data["error"]!]
-                            completion(nil, NSError(domain: "BranchVideoSigninErrorDomain", code: 30001, userInfo: userInfo))
+                            completion(nil, NSError(domain: "CashTimeErrorDomain", code: 30001, userInfo: userInfo))
                         }
                     }
                 } else {

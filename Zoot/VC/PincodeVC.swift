@@ -7,6 +7,8 @@
 
 import UIKit
 import SVPinView
+import FirebaseAuth
+import SVProgressHUD
 
 class PincodeVC: UIViewController {
 
@@ -14,6 +16,8 @@ class PincodeVC: UIViewController {
     @IBOutlet weak var phoneLabel: UILabel!
     
     public var phoneNumber: String!
+    public var verificationID: String!
+    public var isSignin = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +27,28 @@ class PincodeVC: UIViewController {
         
         pincodeView.font = UIFont(name: "Montserrat-Bold", size: 18)!
         pincodeView.style = .none
-        pincodeView.pinLength = 5
+        pincodeView.pinLength = 6
         pincodeView.shouldSecureText = false
         pincodeView.fieldBackgroundColor = .white
         pincodeView.fieldCornerRadius = 8
         pincodeView.activeFieldBackgroundColor = .white
         pincodeView.activeFieldCornerRadius = 8
         pincodeView.didFinishCallback = { pin in
-            self.performSegue(withIdentifier: "EmailVC", sender: nil)
+            let credential = PhoneAuthProvider.provider().credential(withVerificationID: self.verificationID, verificationCode: pin)
+            SVProgressHUD.show()
+            Auth.auth().signIn(with: credential) { (authResult, error) in
+                SVProgressHUD.dismiss()
+                if let error = error {
+                    showAlertViewController(title: "Error", message: error.localizedDescription)
+                } else {
+                    CTUser.current.authDataResult = authResult
+                    if self.isSignin {
+                        self.dismiss(animated: true, completion: nil)
+                    } else {
+                        self.performSegue(withIdentifier: "EmailVC", sender: nil)
+                    }
+                }
+            }
         }
         pincodeView.didChangeCallback = { pin in
             
@@ -60,6 +78,5 @@ class PincodeVC: UIViewController {
         let vc = storyBoard.instantiateViewController(withIdentifier: "birthdateVC") as! BirthdateVC
         self.navigationController?.pushViewController(vc, animated: true)
         // self.signUp(username: "demotest3", password: "'demotest1234", email: "demotest@dev.com", phonenumber: "+15518047124")
-        
     }
 }

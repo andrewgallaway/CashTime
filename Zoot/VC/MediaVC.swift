@@ -9,6 +9,9 @@
 import UIKit
 import Mantis
 import MobileCoreServices
+import FirebaseStorage
+import FirebaseAuth
+import SVProgressHUD
 
 class MediaVC: UIViewController {
 
@@ -17,6 +20,10 @@ class MediaVC: UIViewController {
     @IBOutlet weak var longpressLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
     
+    private var snapshotView: UIView?
+    private var snapshotIndexPath: IndexPath?
+    private var snapshotPanPoint: CGPoint?
+    private var replaceIndex = -1
     fileprivate var arrayPhotos: [Any] = []
     
     var selectedIndex: Int = 0
@@ -45,6 +52,10 @@ class MediaVC: UIViewController {
         self.longpressLabel.addGestureRecognizer(longGesture)
     }
     
+    func gotoHomeScreen() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MoveAndZoomVC" {
             let controller = segue.destination as! MoveAndZoomVC
@@ -58,25 +69,56 @@ class MediaVC: UIViewController {
     }
     
     // MARK: - IBAction
-    @objc @IBAction func nextAction(){
-        
+    @objc @IBAction func nextAction() {
+        if arrayPhotos.count == 0 {
+            gotoHomeScreen()
+            return
+        }
+        var uploadedCount = 0
+        let uid = Auth.auth().currentUser!.uid
+        SVProgressHUD.show()
+        for media in arrayPhotos {
+            if let image = media as? UIImage {
+                let data = image.jpegData(compressionQuality: 0.8)!
+                let filename = generateRandomFileName(fileExtension: "jpg")
+                let storage = Storage.storage().reference(withPath: "\(uid)/profiles/\(filename)")
+                storage.putData(data, metadata: nil) { (metaData, error) in
+                    uploadedCount += 1
+                    if uploadedCount == self.arrayPhotos.count {
+                        SVProgressHUD.dismiss()
+                        self.gotoHomeScreen()
+                    }
+                }
+            } else if let file = media as? URL {
+                let filename = file.lastPathComponent
+                let storage = Storage.storage().reference(withPath: "\(uid)/profiles/\(filename)")
+                let data = try! Data(contentsOf: file)
+                storage.putData(data, metadata: nil) { (metaData, error) in
+                    uploadedCount += 1
+                    if uploadedCount == self.arrayPhotos.count {
+                        SVProgressHUD.dismiss()
+                        self.gotoHomeScreen()
+                    }
+                }
+            }
+        }
     }
     
-    @objc @IBAction func backAction(){
+    @objc @IBAction func backAction() {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc func reorderAction(){
+    @objc func reorderAction() {
         print("reorder reorder")
     }
     
     //Select Photo_Dialog
-    func selectPhoto(index: Int){
+    func selectPhoto(index: Int) {
         let alert = UIAlertController(title: "Choose Media", message: nil, preferredStyle: .actionSheet)
-//        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
-//            self.selectedIndex = index
-//            self.openCamera()
-//        }))
+        /*alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.selectedIndex = index
+            self.openCamera()
+        }))*/
         
         alert.addAction(UIAlertAction(title: "Pictures", style: .default, handler: { _ in
             self.selectedIndex = index
@@ -114,9 +156,85 @@ class MediaVC: UIViewController {
         imagePicker.mediaTypes = [mediaType]
         self.present(imagePicker, animated: true, completion: nil)
     }
+    
+    // MARK: - UIGestureRecognizer Handlers
+    @IBAction func handleLongPressGesture(_ recognizer: UILongPressGestureRecognizer) {
+        let location = recognizer.location(in: photoCollectionView)
+        guard let indexPath = photoCollectionView.indexPathForItem(at: location) else {
+            return
+        }
+        guard let selectedCell = photoCollectionView.cellForItem(at: indexPath) else {
+            return
+        }
+        
+        switch recognizer.state {
+        case .began:
+            if indexPath.item >= arrayPhotos.count { return }
+            
+            let cell = photoCollectionView.cellForItem(at: indexPath)!
+            snapshotView = cell.snapshotView(afterScreenUpdates: true)
+            photoCollectionView.addSubview(snapshotView!)
+            snapshotView?.center = location
+            cell.contentView.alpha = 0.0
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                self.snapshotView?.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                self.snapshotView?.alpha = 0.9
+            })
+            
+            snapshotPanPoint = location
+            snapshotIndexPath = indexPath
+        case .changed:
+            guard let snapshotPanPoint = snapshotPanPoint else { return }
+            
+            let translation = CGPoint(x: location.x - snapshotPanPoint.x, y: location.y - snapshotPanPoint.y)
+            snapshotView?.center.x += translation.x
+            snapshotView?.center.y += translation.y
+            self.snapshotPanPoint = location
+            
+            if indexPath.item >= arrayPhotos.count { return }
+            
+            let snapMedia = arrayPhotos[snapshotIndexPath!.item]
+            if let index = arrayPhotos.firstIndex(where: { (object) -> Bool in
+                if let media = snapMedia as? UIImage, let image = object as? UIImage, media == image {
+                    return true
+                }
+                if let media = snapMedia as? URL, let url = object as? URL, media == url {
+                    return true
+                }
+                return false
+            }) {
+                arrayPhotos.remove(at: index)
+                arrayPhotos.insert(snapMedia, at: indexPath.item)
+            }
+            
+            photoCollectionView.moveItem(at: snapshotIndexPath!, to: indexPath)
+            snapshotIndexPath = indexPath
+        default:
+            guard let snapshotIndexPath = snapshotIndexPath else { return }
+            if snapshotIndexPath.item >= arrayPhotos.count { return }
+            
+            let cell = photoCollectionView.cellForItem(at: snapshotIndexPath)!
+            UIView.animate(
+                withDuration: 0.1,
+                animations: {
+                    self.snapshotView?.center = cell.center
+                    self.snapshotView?.transform = CGAffineTransform.identity
+                    self.snapshotView?.alpha = 1.0
+            },
+                completion: { finished in
+                    cell.contentView.alpha = 1.0
+                    self.snapshotView?.removeFromSuperview()
+                    self.snapshotView = nil
+            })
+            self.snapshotIndexPath = nil
+            self.snapshotPanPoint = nil
+            self.photoCollectionView.reloadData()
+        }
+    }
 }
 
-extension MediaVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension MediaVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         var selectedImage: UIImage?
@@ -189,10 +307,6 @@ extension MediaVC: UICollectionViewDelegate {
         }
         selectedIndex = indexPath.item
         selectPhoto(index: selectedIndex)
-//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = storyBoard.instantiateViewController(withIdentifier: "moveandzoomVC") as! MoveandzoomVC
-//        vc.image = firstImage
-//        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

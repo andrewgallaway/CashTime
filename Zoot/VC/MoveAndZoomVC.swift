@@ -149,7 +149,7 @@ class MoveAndZoomVC: UIViewController , UIScrollViewDelegate {
         cropRect.size.width = scrollView.imageToDisplay!.size.width * normalizedWidth
         cropRect.size.height = scrollView.imageToDisplay!.size.height * normalizedHeight
         
-        VideoManager.shared.trimCropVideo(url: videoURL!, outputURL: URL(fileURLWithPath: path), startTime: CMTimeGetSeconds(trimmerView.startTime!), endTime: CMTimeGetSeconds(trimmerView.endTime!), outputFrame: cropRect) { (success, outputURL, error) in
+        VideoManager.shared.trimCropVideo(url: videoURL!, outputURL: URL(fileURLWithPath: path), startTime: CMTimeGetSeconds(trimmerView.startTime!), endTime: CMTimeGetSeconds(trimmerView.endTime!), outputFrame: cropRect, isMuted: scrollView.isMuted) { (success, outputURL, error) in
             completion(outputURL)
         }
     }

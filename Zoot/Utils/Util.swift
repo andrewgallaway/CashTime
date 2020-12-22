@@ -81,3 +81,30 @@ func showAlertViewController(title: String? = nil, message: String) {
         topViewController.present(controller, animated: true, completion: nil)
     }
 }
+
+struct PlatformUtils {
+    static let isSimulator: Bool = {
+        var isSim = false
+        #if arch(i386) || arch(x86_64)
+            isSim = true
+        #endif
+        return isSim
+    }()
+}
+
+struct TokenUtils {
+    static func fetchToken(url : String) throws -> String {
+        var token: String = "TWILIO_ACCESS_TOKEN"
+        let requestURL: URL = URL(string: url)!
+        do {
+            let data = try Data(contentsOf: requestURL)
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : String] {
+                token = json["token"]!
+            }
+        } catch let error as NSError {
+            print ("Invalid token url, error = \(error)")
+            throw error
+        }
+        return token
+    }
+}

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class CTUser: NSObject {
     var userId: Int = 0
@@ -18,6 +19,8 @@ class CTUser: NSObject {
     var phone_code: String = ""
     var birthday: Date = Date()
     var isLoggedIn: Bool = false
+    
+    var authDataResult: AuthDataResult? = nil
     
     static var current = CTUser()
     

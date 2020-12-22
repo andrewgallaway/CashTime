@@ -32,15 +32,18 @@ class SignInVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func initUI(){
-        let button = ASAuthorizationAppleIDButton()
-        button.layer.cornerRadius = 20
-        button.layer.masksToBounds = true
-        button.addTarget(self, action: #selector(apple_SignInAction), for: .touchUpInside)
-        self.appleSignInView.addArrangedSubview(button)
-        
-        GIDSignIn.sharedInstance()?.delegate = self
-        
+    func initUI() {
+        if #available(iOS 13.0, *) {
+            let button = ASAuthorizationAppleIDButton()
+            button.layer.cornerRadius = 20
+            button.layer.masksToBounds = true
+            button.addTarget(self, action: #selector(apple_SignInAction), for: .touchUpInside)
+            self.appleSignInView.addArrangedSubview(button)
+            
+            GIDSignIn.sharedInstance()?.delegate = self
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     func add_Gestures(){
@@ -68,12 +71,16 @@ class SignInVC: UIViewController {
     }
     
     @objc func apple_SignInAction(){
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName, .email]
-        let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate = self
-        controller.presentationContextProvider = self
-        controller.performRequests()
+        if #available(iOS 13.0, *) {
+            let request = ASAuthorizationAppleIDProvider().createRequest()
+            request.requestedScopes = [.fullName, .email]
+            let controller = ASAuthorizationController(authorizationRequests: [request])
+            controller.delegate = self
+            controller.presentationContextProvider = self
+            controller.performRequests()
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @objc func fb_SignInAction(){
@@ -152,10 +159,12 @@ extension SignInVC : GIDSignInDelegate{
 }
 
 extension SignInVC: ASAuthorizationControllerDelegate {
+    @available(iOS 13.0, *)
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         
     }
     
+    @available(iOS 13.0, *)
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
             case let credential as ASAuthorizationAppleIDCredential:
@@ -177,6 +186,7 @@ extension SignInVC: ASAuthorizationControllerDelegate {
 }
 
 extension SignInVC: ASAuthorizationControllerPresentationContextProviding {
+    @available(iOS 13.0, *)
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return view.window!
     }

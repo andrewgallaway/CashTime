@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import SDWebImage
 
 protocol PhotoCollectionCellDelegate {
     func didRemovePhoto(_ cell: PhotoCollectionCell)
@@ -24,6 +25,7 @@ class PhotoCollectionCell: UICollectionViewCell {
     fileprivate var playerItem: AVPlayerItem? = nil
     
     public var delegate: PhotoCollectionCellDelegate? = nil
+    
     public var photo: UIImage? {
         didSet {
             photoImageView.image = photo
@@ -59,6 +61,15 @@ class PhotoCollectionCell: UICollectionViewCell {
             prepareVideoPlayer()
         }
     }
+    
+    public var photoURL: URL? {
+        didSet {
+            photoImageView.sd_setImage(with: photoURL, placeholderImage: nil, options: SDWebImageOptions(rawValue: 0)) { (image, error, cacheType, url) in
+                
+            }
+        }
+    }
+    
     public var index: Int = -1
     
     override func layoutSubviews() {
@@ -76,6 +87,7 @@ class PhotoCollectionCell: UICollectionViewCell {
         }
         playerItem = AVPlayerItem(url: url)
         videoPlayer = AVPlayer(playerItem: playerItem)
+        videoPlayer?.isMuted = true
         playerLayer = AVPlayerLayer(player: videoPlayer)
         if let layer = playerLayer {
             photoImageView.layer.addSublayer(layer)

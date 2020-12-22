@@ -8,6 +8,7 @@
 
 import UIKit
 import UIColor_Hex_Swift
+import FirebaseFirestore
 
 class EmailVC: UIViewController {
 
@@ -51,14 +52,22 @@ class EmailVC: UIViewController {
             return
         }
         
-        guard let password = passwordTextField.text else { return }
+        /*guard let password = passwordTextField.text else { return }
         if password.count < 6 {
             showAlertViewController(message: "Password requires at least 6 characters!")
             return
-        }
-        CTUser.current.email = email
-        CTUser.current.password = password
-        performSegue(withIdentifier: "WelcomeVC", sender: nil)
+        }*/
+        
+        let query = Firestore.firestore().collection("users").whereField("email", in: [email]).limit(to: 1)
+        query.getDocuments(completion: { (snapshot, error) in
+            if let snapshot = snapshot, snapshot.count > 0 {
+                showAlertViewController(title: "Error", message: "The email exists already. Please type another one.")
+            } else {
+                CTUser.current.email = email
+                //CTUser.current.password = password
+                self.performSegue(withIdentifier: "WelcomeVC", sender: nil)
+            }
+        })
     }
     
     @objc @IBAction func backAction() {

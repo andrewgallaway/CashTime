@@ -23,6 +23,7 @@ class PhoneVC: UIViewController {
     
     var myPreferredFocusedView:UIView?
     var verificationID: String?
+    var isSignin = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,33 +132,46 @@ class PhoneVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PincodeVC" {
             let controller = segue.destination as! PincodeVC
-            controller.phoneNumber = sender as! String
+            controller.verificationID = (sender as! String)
+            controller.phoneNumber = CTUser.current.phone_code + CTUser.current.phone
+            controller.isSignin = isSignin
         }
     }
     // MARK: - IBAction
     @objc @IBAction func sendSMSAction() {
         self.view.endEditing(true)
         // here is test signup informatoin for Aws auth...
-        guard let phone = phoneTextField.getRawPhoneNumber() else {
+        guard let phoneNumber = phoneTextField.getRawPhoneNumber() else {
             showAlertViewController(message: "Please enter valid phone number!")
             return
         }
         CTUser.current.phone = phoneTextField.text!
         CTUser.current.phone_code = phoneTextField.selectedCountry!.phoneCode
-        performSegue(withIdentifier: "PincodeVC", sender: phone)
+        
+        let fullNumber = phoneTextField.selectedCountry!.phoneCode + phoneNumber
+        PhoneAuthProvider.provider().verifyPhoneNumber(fullNumber, uiDelegate: nil) { (verificationID, error) in
+            if let error = error {
+                showAlertViewController(title: "Error", message: error.localizedDescription)
+            } else {
+                self.verificationID = verificationID
+                
+                // Sign in using the verificationID and the code sent to the user
+                self.performSegue(withIdentifier: "PincodeVC", sender: verificationID)
+            }
+        }
     }
     
     func signUp(username: String, password: String, email: String, phonenumber: String) {
-            PhoneAuthProvider.provider().verifyPhoneNumber(phonenumber, uiDelegate: nil) { (verificationID, error) in
-              if let error = error {
-                print(error)
-                return
-              }
-              self.verificationID = verificationID
-               
-              // Sign in using the verificationID and the code sent to the user
-              // ...
-            }
+        PhoneAuthProvider.provider().verifyPhoneNumber(phonenumber, uiDelegate: nil) { (verificationID, error) in
+          if let error = error {
+            print(error)
+            return
+          }
+          self.verificationID = verificationID
+           
+          // Sign in using the verificationID and the code sent to the user
+          // ...
+        }
     }
     
     override var preferredFocusedView: UIView? {

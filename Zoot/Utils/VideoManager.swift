@@ -93,7 +93,7 @@ class VideoManager: NSObject {
         }
     }
     
-    func trimCropVideo(url: URL, outputURL: URL, startTime: Float64, endTime: Float64, outputFrame: CGRect, completion: @escaping CompleteHandler)  {
+    func trimCropVideo(url: URL, outputURL: URL, startTime: Float64, endTime: Float64, outputFrame: CGRect, isMuted: Bool, completion: @escaping CompleteHandler)  {
         let asset = AVURLAsset(url: url)
         let assetTrack = asset.tracks(withMediaType: .video).first!
         var renderSize = assetTrack.naturalSize
@@ -115,7 +115,7 @@ class VideoManager: NSObject {
         } catch {
             
         }
-        if let track = asset.tracks(withMediaType: .audio).first {
+        if let track = asset.tracks(withMediaType: .audio).first, isMuted == false {
             do {
                 let audioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
                 try audioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: track, at: .zero)
@@ -142,7 +142,7 @@ class VideoManager: NSObject {
 
         let mainComposition = AVMutableVideoComposition()
         mainComposition.instructions = [mainInstruction]
-        mainComposition.frameDuration = CMTime(seconds: 1, preferredTimescale: 30)
+        mainComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
         mainComposition.renderSize = renderSize
 
         try? FileManager.default.removeItem(at: outputURL)

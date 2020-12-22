@@ -27,22 +27,23 @@ class LoginVC: UIViewController {
         signinButton.layer.borderColor = UIColor("#2FAC70").cgColor
     }
 
-    /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "PhoneVC" {
+            let controller = segue.destination as! PhoneVC
+            controller.isSignin = sender as! Bool
+        }
     }
-    */
 
     // MARK: - IBAction
     @IBAction func createAction(_ sender: UIButton?) {
-        
+        performSegue(withIdentifier: "PhoneVC", sender: false)
     }
     
     @IBAction func signinAction(_ sender: UIButton?) {
-        
+        performSegue(withIdentifier: "PhoneVC", sender: true)
     }
 }

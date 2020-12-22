@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class UsernameVC: UIViewController {
 
@@ -33,6 +35,17 @@ class UsernameVC: UIViewController {
         usernameCheckMarkerImageView.isHidden = true
     }
     
+    func verifyUsername(_ username: String) {
+        let query = Firestore.firestore().collection("users").whereField("username", in: [username]).limit(to: 1)
+        query.getDocuments(completion: { (snapshot, error) in
+            if let snapshot = snapshot, snapshot.count > 0 {
+                self.usernameCheckMarkerImageView.isHidden = true
+            } else {
+                self.usernameCheckMarkerImageView.isHidden = false
+            }
+        })
+    }
+    
     // MARK: - IBAction
     @objc @IBAction func nextAction() {
         guard let username = usernameTextField.text else { return }
@@ -42,6 +55,12 @@ class UsernameVC: UIViewController {
         }
         
         CTUser.current.username = username
+        
+        if let user = Auth.auth().currentUser {
+            let uid = user.uid
+            let store = Firestore.firestore().collection("users").document(uid)
+            store.setData(["email" : CTUser.current.email, "name" : CTUser.current.name, "birthday" : CTUser.current.birthday, "username" : CTUser.current.username], merge: true)
+        }
         performSegue(withIdentifier: "MediaVC", sender: nil)
     }
     
@@ -54,14 +73,7 @@ class UsernameVC: UIViewController {
         if username.isEmpty {
             self.usernameCheckMarkerImageView.isHidden = true
         } else {
-            APIManager.shared.cancelAllRequests()
-            APIManager.shared.isExistUsername(username) { (response, error) in
-                if let response = response, let exist = response["exist"] as? Bool, exist == false {
-                    self.usernameCheckMarkerImageView.isHidden = false
-                } else {
-                    self.usernameCheckMarkerImageView.isHidden = true
-                }
-            }
+            verifyUsername(username)
         }
         
     }
@@ -71,14 +83,7 @@ extension UsernameVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text! as NSString
         let newText = text.replacingCharacters(in: range, with: string)
-        APIManager.shared.cancelAllRequests()
-        APIManager.shared.isExistUsername(newText) { (response, error) in
-            if let response = response, let exist = response["exist"] as? Bool, exist == false {
-                self.usernameCheckMarkerImageView.isHidden = false
-            } else {
-                self.usernameCheckMarkerImageView.isHidden = true
-            }
-        }
+        verifyUsername(newText)
         return true
     }
 }

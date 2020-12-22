@@ -10,6 +10,12 @@
 		260F5FA02515559600C492DD /* EmailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260F5F9F2515559600C492DD /* EmailVC.swift */; };
 		260F5FA22515566C00C492DD /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260F5FA12515566C00C492DD /* WelcomeVC.swift */; };
 		260F5FA6251573DB00C492DD /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260F5FA5251573DB00C492DD /* BubbleView.swift */; };
+		2637950A257A90C10079C79D /* VideoRoomVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26379509257A90C10079C79D /* VideoRoomVC.swift */; };
+		2637C82C253F3B97005632D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2637C82A253F3B97005632D2 /* Main.storyboard */; };
+		2637C82E253F3BFA005632D2 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637C82D253F3BFA005632D2 /* HomeVC.swift */; };
+		2637F688258BB2F7005D547B /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637F687258BB2F7005D547B /* SettingsTableCell.swift */; };
+		2645FA1F258150250006CF65 /* MediaCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2645FA1E258150250006CF65 /* MediaCollectionCell.swift */; };
+		264BB20D25828C7F00FE1255 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264BB20C25828C7F00FE1255 /* SettingsVC.swift */; };
 		266B3D842519152E008ACC52 /* MoveAndZoomVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266B3D832519152E008ACC52 /* MoveAndZoomVC.swift */; };
 		266B3D8E251915ED008ACC52 /* FAGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 266B3D86251915ED008ACC52 /* FAGridView.xib */; };
 		266B3D8F251915ED008ACC52 /* FAImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266B3D87251915ED008ACC52 /* FAImageCell.swift */; };
@@ -22,6 +28,7 @@
 		266B3D9825192876008ACC52 /* PhotoCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266B3D9725192876008ACC52 /* PhotoCollectionCell.swift */; };
 		26840C0C2523833100C98711 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26840C0B2523833100C98711 /* APIManager.swift */; };
 		26840C0E2523869000C98711 /* CTMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26840C0D2523869000C98711 /* CTMedia.swift */; };
+		26941F452555369F00E9C125 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26941F442555369F00E9C125 /* ProfileVC.swift */; };
 		269D0C7D25148BDB003C5C25 /* PincodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269D0C7C25148BDB003C5C25 /* PincodeVC.swift */; };
 		26C32C912519D19200761D1A /* TrimVideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C32C902519D19200761D1A /* TrimVideoVC.swift */; };
 		26C32C932519D8B600761D1A /* CTUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C32C922519D8B600761D1A /* CTUser.swift */; };
@@ -34,14 +41,13 @@
 		26C32CA72519EFDB00761D1A /* ThumbSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C32C9E2519EFDA00761D1A /* ThumbSelectorView.swift */; };
 		26C32CA82519EFDB00761D1A /* HandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C32CA02519EFDA00761D1A /* HandlerView.swift */; };
 		26C32CA92519EFDB00761D1A /* PryntTrimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C32CA12519EFDA00761D1A /* PryntTrimmerView.swift */; };
+		26D6A9CA2570503300B2CB1D /* UserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D6A9C92570503300B2CB1D /* UserTableCell.swift */; };
 		26D7E3032513CABE004C3B6A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D7E3022513CABE004C3B6A /* LoginVC.swift */; };
 		26D7E3082513CC74004C3B6A /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26D7E3062513CC74004C3B6A /* Montserrat-Bold.ttf */; };
 		26D7E3092513CC74004C3B6A /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26D7E3072513CC74004C3B6A /* Montserrat-Regular.ttf */; };
 		26D7E30B2513D617004C3B6A /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D7E30A2513D617004C3B6A /* UIView+Extension.swift */; };
 		26D7E30D2513DD7F004C3B6A /* ArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D7E30C2513DD7F004C3B6A /* ArcView.swift */; };
 		26D7E30F25140581004C3B6A /* NameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D7E30E25140581004C3B6A /* NameVC.swift */; };
-		26FC7709251DC7F800705A28 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 26FC7707251DC7F800705A28 /* amplifyconfiguration.json */; };
-		26FC770A251DC7F800705A28 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 26FC7708251DC7F800705A28 /* awsconfiguration.json */; };
 		447F17E925087E8900B5D8E7 /* BirthdateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F17E825087E8900B5D8E7 /* BirthdateVC.swift */; };
 		447F17ED25087ED400B5D8E7 /* UsernameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F17EC25087ED400B5D8E7 /* UsernameVC.swift */; };
 		447F17EF25087EF900B5D8E7 /* MediaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F17EE25087EF900B5D8E7 /* MediaVC.swift */; };
@@ -52,7 +58,7 @@
 		B1C07EDE250D72FD00DA9955 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C07EDD250D72FD00DA9955 /* Extension.swift */; };
 		CB169F7F24F48F6000AF8DE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB169F7E24F48F6000AF8DE0 /* AppDelegate.swift */; };
 		CB169F8124F48F6000AF8DE0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB169F8024F48F6000AF8DE0 /* SceneDelegate.swift */; };
-		CB169F8624F48F6000AF8DE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB169F8424F48F6000AF8DE0 /* Main.storyboard */; };
+		CB169F8624F48F6000AF8DE0 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB169F8424F48F6000AF8DE0 /* Login.storyboard */; };
 		CB169F8824F48F6200AF8DE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB169F8724F48F6200AF8DE0 /* Assets.xcassets */; };
 		CB169F8B24F48F6200AF8DE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB169F8924F48F6200AF8DE0 /* LaunchScreen.storyboard */; };
 		CB169F9624F48F6200AF8DE0 /* ZootTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB169F9524F48F6200AF8DE0 /* ZootTests.swift */; };
@@ -86,6 +92,12 @@
 		260F5F9F2515559600C492DD /* EmailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVC.swift; sourceTree = "<group>"; };
 		260F5FA12515566C00C492DD /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
 		260F5FA5251573DB00C492DD /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		26379509257A90C10079C79D /* VideoRoomVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRoomVC.swift; sourceTree = "<group>"; };
+		2637C82B253F3B97005632D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2637C82D253F3BFA005632D2 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		2637F687258BB2F7005D547B /* SettingsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
+		2645FA1E258150250006CF65 /* MediaCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionCell.swift; sourceTree = "<group>"; };
+		264BB20C25828C7F00FE1255 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		266B3D832519152E008ACC52 /* MoveAndZoomVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveAndZoomVC.swift; sourceTree = "<group>"; };
 		266B3D86251915ED008ACC52 /* FAGridView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FAGridView.xib; sourceTree = "<group>"; };
 		266B3D87251915ED008ACC52 /* FAImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAImageCell.swift; sourceTree = "<group>"; };
@@ -98,6 +110,7 @@
 		266B3D9725192876008ACC52 /* PhotoCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionCell.swift; sourceTree = "<group>"; };
 		26840C0B2523833100C98711 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		26840C0D2523869000C98711 /* CTMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTMedia.swift; sourceTree = "<group>"; };
+		26941F442555369F00E9C125 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		269D0C7C25148BDB003C5C25 /* PincodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PincodeVC.swift; path = /Volumes/Work/Adam/CashTime/Zoot/VC/PincodeVC.swift; sourceTree = "<absolute>"; };
 		26C32C902519D19200761D1A /* TrimVideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimVideoVC.swift; sourceTree = "<group>"; };
 		26C32C922519D8B600761D1A /* CTUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTUser.swift; sourceTree = "<group>"; };
@@ -110,14 +123,13 @@
 		26C32C9E2519EFDA00761D1A /* ThumbSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbSelectorView.swift; sourceTree = "<group>"; };
 		26C32CA02519EFDA00761D1A /* HandlerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlerView.swift; sourceTree = "<group>"; };
 		26C32CA12519EFDA00761D1A /* PryntTrimmerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PryntTrimmerView.swift; sourceTree = "<group>"; };
+		26D6A9C92570503300B2CB1D /* UserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableCell.swift; sourceTree = "<group>"; };
 		26D7E3022513CABE004C3B6A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		26D7E3062513CC74004C3B6A /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		26D7E3072513CC74004C3B6A /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		26D7E30A2513D617004C3B6A /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		26D7E30C2513DD7F004C3B6A /* ArcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcView.swift; sourceTree = "<group>"; };
 		26D7E30E25140581004C3B6A /* NameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameVC.swift; sourceTree = "<group>"; };
-		26FC7707251DC7F800705A28 /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = amplifyconfiguration.json; sourceTree = SOURCE_ROOT; };
-		26FC7708251DC7F800705A28 /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = SOURCE_ROOT; };
 		447F17E825087E8900B5D8E7 /* BirthdateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdateVC.swift; sourceTree = "<group>"; };
 		447F17EC25087ED400B5D8E7 /* UsernameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameVC.swift; sourceTree = "<group>"; };
 		447F17EE25087EF900B5D8E7 /* MediaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaVC.swift; sourceTree = "<group>"; };
@@ -133,7 +145,7 @@
 		CB169F7B24F48F6000AF8DE0 /* CashTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CashTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB169F7E24F48F6000AF8DE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB169F8024F48F6000AF8DE0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CB169F8524F48F6000AF8DE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CB169F8524F48F6000AF8DE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
 		CB169F8724F48F6200AF8DE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CB169F8A24F48F6200AF8DE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CB169F8C24F48F6200AF8DE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -217,6 +229,9 @@
 			isa = PBXGroup;
 			children = (
 				266B3D9725192876008ACC52 /* PhotoCollectionCell.swift */,
+				2645FA1E258150250006CF65 /* MediaCollectionCell.swift */,
+				26D6A9C92570503300B2CB1D /* UserTableCell.swift */,
+				2637F687258BB2F7005D547B /* SettingsTableCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -335,9 +350,8 @@
 				CB169F7E24F48F6000AF8DE0 /* AppDelegate.swift */,
 				CB169F8024F48F6000AF8DE0 /* SceneDelegate.swift */,
 				B19E97902506DBAF008965F4 /* GoogleService-Info.plist */,
-				26FC7707251DC7F800705A28 /* amplifyconfiguration.json */,
-				26FC7708251DC7F800705A28 /* awsconfiguration.json */,
-				CB169F8424F48F6000AF8DE0 /* Main.storyboard */,
+				2637C82A253F3B97005632D2 /* Main.storyboard */,
+				CB169F8424F48F6000AF8DE0 /* Login.storyboard */,
 				CB169F8724F48F6200AF8DE0 /* Assets.xcassets */,
 				CB169F8924F48F6200AF8DE0 /* LaunchScreen.storyboard */,
 				CB169F8C24F48F6200AF8DE0 /* Info.plist */,
@@ -378,6 +392,10 @@
 				260F5FA12515566C00C492DD /* WelcomeVC.swift */,
 				266B3D832519152E008ACC52 /* MoveAndZoomVC.swift */,
 				26C32C902519D19200761D1A /* TrimVideoVC.swift */,
+				2637C82D253F3BFA005632D2 /* HomeVC.swift */,
+				26379509257A90C10079C79D /* VideoRoomVC.swift */,
+				26941F442555369F00E9C125 /* ProfileVC.swift */,
+				264BB20C25828C7F00FE1255 /* SettingsVC.swift */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -507,12 +525,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				26D7E3092513CC74004C3B6A /* Montserrat-Regular.ttf in Resources */,
+				2637C82C253F3B97005632D2 /* Main.storyboard in Resources */,
 				266B3D8E251915ED008ACC52 /* FAGridView.xib in Resources */,
 				CB169F8B24F48F6200AF8DE0 /* LaunchScreen.storyboard in Resources */,
-				26FC7709251DC7F800705A28 /* amplifyconfiguration.json in Resources */,
 				CB169F8824F48F6200AF8DE0 /* Assets.xcassets in Resources */,
-				26FC770A251DC7F800705A28 /* awsconfiguration.json in Resources */,
-				CB169F8624F48F6000AF8DE0 /* Main.storyboard in Resources */,
+				CB169F8624F48F6000AF8DE0 /* Login.storyboard in Resources */,
 				B19E97912506DBAF008965F4 /* GoogleService-Info.plist in Resources */,
 				26D7E3082513CC74004C3B6A /* Montserrat-Bold.ttf in Resources */,
 			);
@@ -682,17 +699,21 @@
 				266B3D9825192876008ACC52 /* PhotoCollectionCell.swift in Sources */,
 				266B3D91251915ED008ACC52 /* FAImageLoader.swift in Sources */,
 				26D7E30F25140581004C3B6A /* NameVC.swift in Sources */,
+				2637F688258BB2F7005D547B /* SettingsTableCell.swift in Sources */,
 				260F5FA02515559600C492DD /* EmailVC.swift in Sources */,
 				26840C0E2523869000C98711 /* CTMedia.swift in Sources */,
 				266B3D93251915ED008ACC52 /* ImageCropHandler.swift in Sources */,
+				26D6A9CA2570503300B2CB1D /* UserTableCell.swift in Sources */,
 				26D7E3032513CABE004C3B6A /* LoginVC.swift in Sources */,
 				269D0C7D25148BDB003C5C25 /* PincodeVC.swift in Sources */,
 				266B3D842519152E008ACC52 /* MoveAndZoomVC.swift in Sources */,
+				2637950A257A90C10079C79D /* VideoRoomVC.swift in Sources */,
 				266B3D92251915ED008ACC52 /* FAScrollView.swift in Sources */,
 				26C32CA22519EFDB00761D1A /* CropMaskView.swift in Sources */,
 				26D7E30D2513DD7F004C3B6A /* ArcView.swift in Sources */,
 				26C32CA72519EFDB00761D1A /* ThumbSelectorView.swift in Sources */,
 				26C32CA42519EFDB00761D1A /* VideoScrollView.swift in Sources */,
+				2637C82E253F3BFA005632D2 /* HomeVC.swift in Sources */,
 				26C32CA82519EFDB00761D1A /* HandlerView.swift in Sources */,
 				CB169FB324F4980C00AF8DE0 /* SignInVC.swift in Sources */,
 				B1C07EDE250D72FD00DA9955 /* Extension.swift in Sources */,
@@ -705,6 +726,7 @@
 				CBC5CA5424F561F400F31D9C /* Util.swift in Sources */,
 				266B3D95251915ED008ACC52 /* UIImage+Additions.swift in Sources */,
 				266B3D90251915ED008ACC52 /* FAImageCropperVC.swift in Sources */,
+				26941F452555369F00E9C125 /* ProfileVC.swift in Sources */,
 				26C32C912519D19200761D1A /* TrimVideoVC.swift in Sources */,
 				266B3D8F251915ED008ACC52 /* FAImageCell.swift in Sources */,
 				260F5FA6251573DB00C492DD /* BubbleView.swift in Sources */,
@@ -713,7 +735,9 @@
 				266B3D94251915ED008ACC52 /* ImageViewHelper.swift in Sources */,
 				260F5FA22515566C00C492DD /* WelcomeVC.swift in Sources */,
 				26C32CA92519EFDB00761D1A /* PryntTrimmerView.swift in Sources */,
+				2645FA1F258150250006CF65 /* MediaCollectionCell.swift in Sources */,
 				26840C0C2523833100C98711 /* APIManager.swift in Sources */,
+				264BB20D25828C7F00FE1255 /* SettingsVC.swift in Sources */,
 				447F17EF25087EF900B5D8E7 /* MediaVC.swift in Sources */,
 				CB169FB124F491EF00AF8DE0 /* Helper.swift in Sources */,
 			);
@@ -751,12 +775,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		CB169F8424F48F6000AF8DE0 /* Main.storyboard */ = {
+		2637C82A253F3B97005632D2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2637C82B253F3B97005632D2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CB169F8424F48F6000AF8DE0 /* Login.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				CB169F8524F48F6000AF8DE0 /* Base */,
 			);
-			name = Main.storyboard;
+			name = Login.storyboard;
 			sourceTree = "<group>";
 		};
 		CB169F8924F48F6200AF8DE0 /* LaunchScreen.storyboard */ = {
@@ -820,7 +852,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -874,7 +906,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -891,13 +923,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Zoot/Zoot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 26WN8HSYDY;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = GWAHSW45YQ;
 				INFOPLIST_FILE = Zoot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.CashTime;
+				PRODUCT_BUNDLE_IDENTIFIER = app.cashtime;
 				PRODUCT_NAME = CashTime;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -911,13 +944,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Zoot/Zoot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 26WN8HSYDY;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = GWAHSW45YQ;
 				INFOPLIST_FILE = Zoot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.CashTime;
+				PRODUCT_BUNDLE_IDENTIFIER = app.cashtime;
 				PRODUCT_NAME = CashTime;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

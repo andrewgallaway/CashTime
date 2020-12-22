@@ -48,6 +48,15 @@ class FAScrollView: UIScrollView {
     public var gridView: UIView = Bundle.main.loadNibNamed("FAGridView", owner: nil, options: nil)?.first as! UIView
     public var playDelegate: FAScrollViewPlayDelegate? = nil
     public private(set) var isPlaying = false
+    public var isMuted: Bool {
+        get {
+            if let player = self.player {
+                return player.isMuted
+            }
+            
+            return false
+        }
+    }
 
     // MARK : Class Functions
     override func awakeFromNib() {

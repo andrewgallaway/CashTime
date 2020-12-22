@@ -2,7 +2,7 @@
 //  CTMedia.swift
 //  Zoot
 //
-//  Created by Petro Halilov on 9/29/20.
+//  Created by WMaster on 9/29/20.
 //  Copyright © 2020 LoveMobile. All rights reserved.
 //
 

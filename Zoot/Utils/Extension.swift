@@ -15,7 +15,7 @@ extension UITextField {
         let screenWidth = UIScreen.main.bounds.width
         let datepicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 210))
         datepicker.datePickerMode = .date
-        //datepicker.setValue(UIColor.white, forKey: "textColor")
+        datepicker.setValue(UIColor.black, forKey: "textColor")
         //datepicker.backgroundColor = UIColor.init(red: 30/255, green: 40/255, blue: 38/255, alpha: 1.0)
         datepicker.backgroundColor = .white
         self.inputView = datepicker
